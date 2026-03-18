@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>核心能力 - OpenClaw AI 助手</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 20px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateX(-5px);
+        }
+
+        .capability-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .capability-section h2 {
+            color: #667eea;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .priority-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .p0 { background: #fee; color: #c00; }
+        .p1 { background: #ffa50020; color: #ffa500; }
+        .p2 { background: #eef; color: #667eea; }
+
+        .capability-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .capability-card {
+            background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+            border-radius: 15px;
+            padding: 25px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .capability-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+        }
+
+        .capability-card h3 {
+            color: #333;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+        }
+
+        .capability-card h3 .icon {
+            margin-right: 10px;
+            font-size: 1.3em;
+        }
+
+        .capability-card .skills {
+            background: rgba(102, 126, 234, 0.08);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .capability-card .skills-title {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            background: #fff;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            color: #666;
+            border: 1px solid #e0e0e0;
+        }
+
+        .capability-card p {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .example-box {
+            background: #f8f9ff;
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .example-box h4 {
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .example-box p {
+            color: #555;
+            font-size: 0.9em;
+            font-family: 'Consolas', monospace;
+            background: #fff;
+            padding: 8px;
+            border-radius: 5px;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-mini {
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea10, #764ba210);
+            border-radius: 10px;
+        }
+
+        .stat-mini .num {
+            font-size: 1.8em;
+            color: #667eea;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-mini .label {
+            color: #666;
+            font-size: 0.85em;
+        }
+
+        footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 40px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← 返回首页</a>
+
+        <header>
+            <h1>⚡ 核心能力展示</h1>
+            <p style="color: #666; margin-top: 10px;">166+ 技能 · 覆盖电力行业 AI、办公自动化、金融投资等 8 大领域</p>
+        </header>
+
+        <!-- P0 核心能力 -->
+        <div class="capability-section">
+            <h2>P0 - 核心能力 <span class="priority-badge p0">立即建设</span></h2>
+            <div class="capability-grid">
+                <div class="capability-card">
+                    <h3><span class="icon">🏭</span>电力行业 AI 应用</h3>
+                    <div class="stats-row">
+                        <div class="stat-mini">
+                            <span class="num">4</span>
+                            <span class="label">专业技能</span>
+                        </div>
+                        <div class="stat-mini">
+                            <span class="num">11 页</span>
+                            <span class="label">行业报告</span>
+                        </div>
+                    </div>
+                    <div class="skills">
+                        <div class="skills-title">代表技能</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag">domestic-ai-power-news</span>
+                            <span class="skill-tag">structs-power</span>
+                            <span class="skill-tag">structs-energy</span>
+                            <span class="skill-tag">ai-news-zh</span>
+                        </div>
+                    </div>
+                    <p><strong>应用场景：</strong>新技术引进评估、行业解决方案、智巡缺陷样本分析、AI+ 电力客户业务探索</p>
+                    <div class="example-box">
+                        <h4>💬 使用示例</h4>
+                        <p>"生成一份 AI+ 电力行业商业机会分析报告，重点分析智巡缺陷检测方向"</p>
+                    </div>
+                </div>
+
+                <div class="capability-card">
+                    <h3><span class="icon">📊</span>技术评估与 ROI 分析</h3>
+                    <div class="stats-row">
+                        <div class="stat-mini">
+                            <span class="num">5+</span>
+                            <span class="label">分析维度</span>
+                        </div>
+                        <div class="stat-mini">
+                            <span class="num">30%+</span>
+                            <span class="label">效率提升目标</span>
+                        </div>
+                    </div>
+                    <div class="skills">
+                        <div class="skills-title">代表技能</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag">ai-data-analyst-cn</span>
+                            <span class="skill-tag">chart-generator</span>
+                            <span class="skill-tag">mermaid-architect</span>
+                        </div>
+                    </div>
+                    <p><strong>应用场景：</strong>技术选型对比、竞品分析、预算审核支持、研发投入产出比评估</p>
+                    <div class="example-box">
+                        <h4>💬 使用示例</h4>
+                        <p>"对比 3 种智巡缺陷检测技术方案，从成本、准确率、部署难度维度分析 ROI"</p>
+                    </div>
+                </div>
+
+                <div class="capability-card">
+                    <h3><span class="icon">📋</span>项目管理与预算审核</h3>
+                    <div class="stats-row">
+                        <div class="stat-mini">
+                            <span class="num">7</span>
+                            <span class="label">文档技能</span>
+                        </div>
+                        <div class="stat-mini">
+                            <span class="num">自动</span>
+                            <span class="label">周报生成</span>
+                        </div>
+                    </div>
+                    <div class="skills">
+                        <div class="skills-title">代表技能</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag">ai-ppt-generator</span>
+                            <span class="skill-tag">ai-ppt-maker</span>
+                            <span class="skill-tag">microsoft-excel</span>
+                            <span class="skill-tag">md2word-cn</span>
+                        </div>
+                    </div>
+                    <p><strong>应用场景：</strong>项目预算编制、进度跟踪、风险评估、周报自动生成、PPT 汇报材料</p>
+                    <div class="example-box">
+                        <h4>💬 使用示例</h4>
+                        <p>"生成项目预算管理模板，包含研发人员工时、设备采购、外包费用等分类"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- P1 重要能力 -->
+        <div class="capability-section">
+            <h2>P1 - 重要能力 <span class="priority-badge p1">近期建设</span></h2>
+            <div class="capability-grid">
+                <div class="capability-card">
+                    <h3><span class="icon">📄</span>办公自动化</h3>
+                    <div class="skills">
+                        <div class="skills-title">代表技能</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag">office-productivity</span>
+                            <span class="skill-tag">weekly-report</span>
+                            <span class="skill-tag">healthcheck</span>
+                        </div>
+                    </div>
+                    <p><strong>应用场景：</strong>文档自动生成、会议纪要整理、报告编写、桌面截图发送钉钉、智能问数</p>
+                </div>
+
+                <div class="capability-card">
+                    <h3><span class="icon">🎓</span>培训赋能</h3>
+                    <div class="skills">
+                        <div class="skills-title">代表技能</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag">skill-creator</span>
+                            <span class="skill-tag">mermaid-diagram</span>
+                            <span class="skill-tag">generating-ai-images</span>
+                        </div>
+                    </div>
+                    <p><strong>应用场景：</strong>培训材料制作、技能评估、学习路径规划、手绘风格架构图</p>
+                </div>
+
+                <div class="capability-card">
+                    <h3><span class="icon">📈</span>数据分析</h3>
+                    <div class="skills">
+                        <div class="skills-title">代表技能</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag">ai-financial-report-cn</span>
+                            <span class="skill-tag">iwencai-screener</span>
+                            <span class="skill-tag">hk-ai-stock-expert</span>
+                        </div>
+                    </div>
+                    <p><strong>应用场景：</strong>研发数据分析、效率分析、成本分析、基金股票投资建议</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- P2 辅助能力 -->
+        <div class="capability-section">
+            <h2>P2 - 辅助能力 <span class="priority-badge p2">持续建设</span></h2>
+            <div class="capability-grid">
+                <div class="capability-card">
+                    <h3><span class="icon">💰</span>理财投资</h3>
+                    <div class="skills">
+                        <div class="skills-title">代表技能</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag">fund-advisor</span>
+                            <span class="skill-tag">stock-watcher</span>
+                        </div>
+                    </div>
+                    <p><strong>应用场景：</strong>债券基金分析、稳健型投资组合建议、市场洞察</p>
+                </div>
+
+                <div class="capability-card">
+                    <h3><span class="icon">🔍</span>行业研究</h3>
+                    <div class="skills">
+                        <div class="skills-title">代表技能</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag">tavily-search</span>
+                            <span class="skill-tag">tavily-research</span>
+                            <span class="skill-tag">cn-web-search</span>
+                        </div>
+                    </div>
+                    <p><strong>应用场景：</strong>技术趋势分析、竞品调研、政策法规追踪</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>🦞 OpenClaw AI 助手 · 核心能力展示 · 2026 年 3 月</p>
+        </footer>
+    </div>
+</body>
+</html>
