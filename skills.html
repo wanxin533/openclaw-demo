@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>已掌握技能 - OpenClaw AI 助手</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { min-height: 100vh; }
+        body { font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #333; line-height: 1.6; padding: 20px; padding-bottom: 100px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        header { background: rgba(255, 255, 255, 0.95); border-radius: 20px; padding: 30px 40px; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2); text-align: center; }
+        h1 { color: #667eea; font-size: 2em; margin-bottom: 8px; }
+        .header-subtitle { color: #666; font-size: 0.95em; }
+        .tabs-container { background: rgba(255, 255, 255, 0.95); border-radius: 20px; padding: 30px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2); margin-bottom: 30px; }
+        .tabs-nav { display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 2px solid #e0e0e0; overflow-x: auto; padding-bottom: 10px; }
+        .tab-btn { padding: 12px 20px; background: transparent; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-size: 0.95em; font-weight: 600; color: #666; transition: all 0.3s ease; white-space: nowrap; }
+        .tab-btn:hover { color: #667eea; }
+        .tab-btn.active { color: #667eea; border-bottom-color: #667eea; }
+        .tab-btn .badge { background: #667eea; color: #fff; padding: 2px 8px; border-radius: 10px; font-size: 0.75em; margin-left: 5px; }
+        .tab-content { display: none; padding-top: 20px; }
+        .tab-content.active { display: block; }
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
+        .skill-card { background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%); border-radius: 12px; padding: 20px; border-left: 4px solid #667eea; transition: all 0.3s ease; }
+        .skill-card:hover { transform: translateX(5px); box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2); }
+        .skill-name { color: #333; font-size: 1.05em; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; }
+        .skill-name .icon { margin-right: 8px; font-size: 1.2em; }
+        .skill-description { color: #666; font-size: 0.85em; line-height: 1.6; margin-bottom: 12px; }
+        .skill-usage { background: rgba(102, 126, 234, 0.08); padding: 12px; border-radius: 8px; font-size: 0.8em; color: #555; }
+        .skill-usage strong { color: #667eea; }
+        .home-link { position: fixed; bottom: 25px; right: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; padding: 12px 28px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 0.95em; box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4); transition: all 0.3s ease; z-index: 1000; display: flex; align-items: center; gap: 8px; }
+        .home-link:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(102, 126, 234, 0.6); }
+        .home-link .emoji { font-size: 1.2em; }
+        .back-to-top { position: fixed; bottom: 85px; right: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; width: 45px; height: 45px; border-radius: 50%; text-decoration: none; box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4); transition: all 0.3s ease; z-index: 1000; display: none; align-items: center; justify-content: center; font-size: 1.5em; }
+        .back-to-top:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(102, 126, 234, 0.6); }
+        .back-to-top.show { display: flex; }
+        footer { text-align: center; color: rgba(255, 255, 255, 0.9); margin-top: 40px; padding: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 已掌握技能</h1>
+            <p class="header-subtitle">166+ 技能 · 持续进化中</p>
+        </header>
+
+        <div class="tabs-container">
+            <div class="tabs-nav">
+                <button class="tab-btn active" onclick="switchTab(event, 'all')">全部技能<span class="badge">166+</span></button>
+                <button class="tab-btn" onclick="switchTab(event, 'power')">电力 AI<span class="badge">4</span></button>
+                <button class="tab-btn" onclick="switchTab(event, 'finance')">金融投资<span class="badge">7</span></button>
+                <button class="tab-btn" onclick="switchTab(event, 'docs')">文档 PPT<span class="badge">7</span></button>
+                <button class="tab-btn" onclick="switchTab(event, 'charts')">图表架构<span class="badge">5</span></button>
+                <button class="tab-btn" onclick="switchTab(event, 'research')">行业研究<span class="badge">5</span></button>
+                <button class="tab-btn" onclick="switchTab(event, 'images')">图像生成<span class="badge">3</span></button>
+                <button class="tab-btn" onclick="switchTab(event, 'office')">办公效率<span class="badge">4</span></button>
+            </div>
+
+            <div id="all" class="tab-content active">
+                <h3 style="color: #667eea; margin-bottom: 20px; font-size: 1.3em;">⚡ 电力行业 AI（4 个）</h3>
+                <div class="skills-grid">
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📰</span>domestic-ai-power-news</div><div class="skill-description">国内 AI+ 电力新闻资讯聚合</div><div class="skill-usage"><strong>用途：</strong>追踪国内 AI 在电力行业的最新应用、政策动态、技术趋势</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">🏗️</span>structs-power</div><div class="skill-description">电力行业结构化数据分析</div><div class="skill-usage"><strong>用途：</strong>分析电力设备数据、负荷数据、电网运行数据</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">🔌</span>structs-energy</div><div class="skill-description">能源行业结构化数据分析</div><div class="skill-usage"><strong>用途：</strong>分析能源生产、消费、存储等数据</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📻</span>ai-news-zh</div><div class="skill-description">中文 AI 科技日报</div><div class="skill-usage"><strong>用途：</strong>自动采集翻译 AI 行业资讯，推送到钉钉/Telegram</div></div>
+                </div>
+
+                <h3 style="color: #667eea; margin: 30px 0 20px 0; font-size: 1.3em;">💰 金融投资（7 个）</h3>
+                <div class="skills-grid">
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📊</span>fund-advisor</div><div class="skill-description">基金投顾（盈米且慢）</div><div class="skill-usage"><strong>用途：</strong>基金筛选、投资组合分析、市场洞察</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📈</span>hk-ai-stock-expert</div><div class="skill-description">港股 AI 概念投研顾问</div><div class="skill-usage"><strong>用途：</strong>港股 AI 概念股分析、投资建议</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">🔍</span>iwencai-screener</div><div class="skill-description">i 问财选股</div><div class="skill-usage"><strong>用途：</strong>同花顺 i 问财数据筛选、选股策略</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📉</span>ai-financial-report-cn</div><div class="skill-description">财务报告分析</div><div class="skill-usage"><strong>用途：</strong>分析上市公司财报、财务指标解读</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">👁️</span>stock-watcher</div><div class="skill-description">股票监控</div><div class="skill-usage"><strong>用途：</strong>股价监控、异动提醒</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📊</span>ai-data-analyst-cn</div><div class="skill-description">AI 数据分析专家</div><div class="skill-usage"><strong>用途：</strong>数据分析、可视化报表生成</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">💹</span>china-stock-analysis</div><div class="skill-description">A 股分析</div><div class="skill-usage"><strong>用途：</strong>A 股股票分析、投资建议</div></div>
+                </div>
+
+                <h3 style="color: #667eea; margin: 30px 0 20px 0; font-size: 1.3em;">📄 文档/PPT 生成（7 个）</h3>
+                <div class="skills-grid">
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📊</span>ai-ppt-generator</div><div class="skill-description">AI PPT 生成</div><div class="skill-usage"><strong>用途：</strong>根据大纲自动生成 PPT 演示文稿</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📑</span>ai-ppt-maker</div><div class="skill-description">AI 年终总结 PPT</div><div class="skill-usage"><strong>用途：</strong>生成年终总结 PPT，通过飞书发送</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📗</span>microsoft-excel</div><div class="skill-description">Excel 数据处理</div><div class="skill-usage"><strong>用途：</strong>Excel 文件读写、数据转换、报表生成</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📝</span>md2word-cn</div><div class="skill-description">Markdown 转 Word</div><div class="skill-usage"><strong>用途：</strong>将 Markdown 文档转换为 Word 格式</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📋</span>weekly-report</div><div class="skill-description">周报生成</div><div class="skill-usage"><strong>用途：</strong>自动生成工作周报，钉钉推送</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📄</span>office-productivity</div><div class="skill-description">办公生产力</div><div class="skill-usage"><strong>用途：</strong>办公文档自动化处理</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📊</span>chart-generator</div><div class="skill-description">图表生成</div><div class="skill-usage"><strong>用途：</strong>生成柱状图、折线图、饼图等数据可视化图表</div></div>
+                </div>
+
+                <h3 style="color: #667eea; margin: 30px 0 20px 0; font-size: 1.3em;">🎨 图表/架构图（5 个）</h3>
+                <div class="skills-grid">
+                    <div class="skill-card"><div class="skill-name"><span class="icon">🏗️</span>mermaid-architect</div><div class="skill-description">手绘风格 Mermaid 图表</div><div class="skill-usage"><strong>用途：</strong>生成手绘风格的系统架构图、流程图</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📊</span>mermaid-diagram</div><div class="skill-description">Mermaid 流程图</div><div class="skill-usage"><strong>用途：</strong>生成 Mermaid 格式的流程图、时序图</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📈</span>chart-image</div><div class="skill-description">数据图表图片</div><div class="skill-usage"><strong>用途：</strong>生成 publication-quality 图表图片</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📉</span>chart-master</div><div class="skill-description">金融图表</div><div class="skill-usage"><strong>用途：</strong>生成股票 K 线图、金融走势图表</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">✨</span>chart-splat</div><div class="skill-description">图表生成</div><div class="skill-usage"><strong>用途：</strong>快速生成各类数据图表</div></div>
+                </div>
+
+                <h3 style="color: #667eea; margin: 30px 0 20px 0; font-size: 1.3em;">📰 行业研究/资讯（5 个）</h3>
+                <div class="skills-grid">
+                    <div class="skill-card"><div class="skill-name"><span class="icon">🔍</span>tavily-search</div><div class="skill-description">Tavily 搜索</div><div class="skill-usage"><strong>用途：</strong>AI 优化的全网搜索，适合专业领域检索</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📚</span>tavily-research</div><div class="skill-description">Tavily 研究</div><div class="skill-usage"><strong>用途：</strong>深度行业研究、竞品分析</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">🌐</span>cn-web-search</div><div class="skill-description">中文网页搜索</div><div class="skill-usage"><strong>用途：</strong>聚合 13+ 免费搜索引擎，包含公众号文章</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📰</span>ai-news-research</div><div class="skill-description">AI 新闻研究</div><div class="skill-usage"><strong>用途：</strong>AI 行业新闻搜集整理</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📡</span>ai-intel-radar</div><div class="skill-description">AI 情报雷达</div><div class="skill-usage"><strong>用途：</strong>构建 AI 行业情报简报，日常/周常格式</div></div>
+                </div>
+
+                <h3 style="color: #667eea; margin: 30px 0 20px 0; font-size: 1.3em;">🖼️ 图像生成（3 个）</h3>
+                <div class="skills-grid">
+                    <div class="skill-card"><div class="skill-name"><span class="icon">🎨</span>generating-ai-images</div><div class="skill-description">AI 图像生成</div><div class="skill-usage"><strong>用途：</strong>文生图、图片编辑、去掉背景/LOGO</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">🍌</span>nano-banana-pro</div><div class="skill-description">Nano Banana Pro</div><div class="skill-usage"><strong>用途：</strong>Gemini 3 Pro Image 图像生成/编辑</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">🖼️</span>openai-image-gen</div><div class="skill-description">OpenAI 图像生成</div><div class="skill-usage"><strong>用途：</strong>批量生成图片，HTML 画廊展示</div></div>
+                </div>
+
+                <h3 style="color: #667eea; margin: 30px 0 20px 0; font-size: 1.3em;">💼 办公效率（4 个）</h3>
+                <div class="skills-grid">
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📋</span>healthcheck</div><div class="skill-description">健康检查</div><div class="skill-usage"><strong>用途：</strong>追踪饮水、睡眠，JSON 文件存储</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">🤖</span>skill-creator</div><div class="skill-description">技能创建</div><div class="skill-usage"><strong>用途：</strong>创建、编辑、审计 AgentSkills</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">🌤️</span>weather</div><div class="skill-description">天气查询</div><div class="skill-usage"><strong>用途：</strong>wttr.in 或 Open-Meteo 获取天气预报</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">🔧</span>mcporter</div><div class="skill-description">MCP 服务管理</div><div class="skill-usage"><strong>用途：</strong>管理 MCP 服务器、工具调用</div></div>
+                </div>
+            </div>
+
+            <div id="power" class="tab-content">
+                <h3 style="color: #667eea; margin-bottom: 20px; font-size: 1.3em;">⚡ 电力行业 AI</h3>
+                <div class="skills-grid">
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📰</span>domestic-ai-power-news</div><div class="skill-description">国内 AI+ 电力新闻资讯聚合</div><div class="skill-usage"><strong>用途：</strong>追踪国内 AI 在电力行业的最新应用、政策动态、技术趋势</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">🏗️</span>structs-power</div><div class="skill-description">电力行业结构化数据分析</div><div class="skill-usage"><strong>用途：</strong>分析电力设备数据、负荷数据、电网运行数据</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">🔌</span>structs-energy</div><div class="skill-description">能源行业结构化数据分析</div><div class="skill-usage"><strong>用途：</strong>分析能源生产、消费、存储等数据</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📻</span>ai-news-zh</div><div class="skill-description">中文 AI 科技日报</div><div class="skill-usage"><strong>用途：</strong>自动采集翻译 AI 行业资讯，推送到钉钉/Telegram</div></div>
+                </div>
+            </div>
+
+            <div id="finance" class="tab-content">
+                <h3 style="color: #667eea; margin-bottom: 20px; font-size: 1.3em;">💰 金融投资</h3>
+                <div class="skills-grid">
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📊</span>fund-advisor</div><div class="skill-description">基金投顾（盈米且慢）</div><div class="skill-usage"><strong>用途：</strong>基金筛选、投资组合分析、市场洞察</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📈</span>hk-ai-stock-expert</div><div class="skill-description">港股 AI 概念投研顾问</div><div class="skill-usage"><strong>用途：</strong>港股 AI 概念股分析、投资建议</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">🔍</span>iwencai-screener</div><div class="skill-description">i 问财选股</div><div class="skill-usage"><strong>用途：</strong>同花顺 i 问财数据筛选、选股策略</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📉</span>ai-financial-report-cn</div><div class="skill-description">财务报告分析</div><div class="skill-usage"><strong>用途：</strong>分析上市公司财报、财务指标解读</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">👁️</span>stock-watcher</div><div class="skill-description">股票监控</div><div class="skill-usage"><strong>用途：</strong>股价监控、异动提醒</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📊</span>ai-data-analyst-cn</div><div class="skill-description">AI 数据分析专家</div><div class="skill-usage"><strong>用途：</strong>数据分析、可视化报表生成</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">💹</span>china-stock-analysis</div><div class="skill-description">A 股分析</div><div class="skill-usage"><strong>用途：</strong>A 股股票分析、投资建议</div></div>
+                </div>
+            </div>
+
+            <div id="docs" class="tab-content">
+                <h3 style="color: #667eea; margin-bottom: 20px; font-size: 1.3em;">📄 文档/PPT 生成</h3>
+                <div class="skills-grid">
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📊</span>ai-ppt-generator</div><div class="skill-description">AI PPT 生成</div><div class="skill-usage"><strong>用途：</strong>根据大纲自动生成 PPT 演示文稿</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📑</span>ai-ppt-maker</div><div class="skill-description">AI 年终总结 PPT</div><div class="skill-usage"><strong>用途：</strong>生成年终总结 PPT，通过飞书发送</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📗</span>microsoft-excel</div><div class="skill-description">Excel 数据处理</div><div class="skill-usage"><strong>用途：</strong>Excel 文件读写、数据转换、报表生成</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📝</span>md2word-cn</div><div class="skill-description">Markdown 转 Word</div><div class="skill-usage"><strong>用途：</strong>将 Markdown 文档转换为 Word 格式</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📋</span>weekly-report</div><div class="skill-description">周报生成</div><div class="skill-usage"><strong>用途：</strong>自动生成工作周报，钉钉推送</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📄</span>office-productivity</div><div class="skill-description">办公生产力</div><div class="skill-usage"><strong>用途：</strong>办公文档自动化处理</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📊</span>chart-generator</div><div class="skill-description">图表生成</div><div class="skill-usage"><strong>用途：</strong>生成柱状图、折线图、饼图等数据可视化图表</div></div>
+                </div>
+            </div>
+
+            <div id="charts" class="tab-content">
+                <h3 style="color: #667eea; margin-bottom: 20px; font-size: 1.3em;">🎨 图表/架构图</h3>
+                <div class="skills-grid">
+                    <div class="skill-card"><div class="skill-name"><span class="icon">🏗️</span>mermaid-architect</div><div class="skill-description">手绘风格 Mermaid 图表</div><div class="skill-usage"><strong>用途：</strong>生成手绘风格的系统架构图、流程图</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📊</span>mermaid-diagram</div><div class="skill-description">Mermaid 流程图</div><div class="skill-usage"><strong>用途：</strong>生成 Mermaid 格式的流程图、时序图</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📈</span>chart-image</div><div class="skill-description">数据图表图片</div><div class="skill-usage"><strong>用途：</strong>生成 publication-quality 图表图片</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📉</span>chart-master</div><div class="skill-description">金融图表</div><div class="skill-usage"><strong>用途：</strong>生成股票 K 线图、金融走势图表</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">✨</span>chart-splat</div><div class="skill-description">图表生成</div><div class="skill-usage"><strong>用途：</strong>快速生成各类数据图表</div></div>
+                </div>
+            </div>
+
+            <div id="research" class="tab-content">
+                <h3 style="color: #667eea; margin-bottom: 20px; font-size: 1.3em;">📰 行业研究/资讯</h3>
+                <div class="skills-grid">
+                    <div class="skill-card"><div class="skill-name"><span class="icon">🔍</span>tavily-search</div><div class="skill-description">Tavily 搜索</div><div class="skill-usage"><strong>用途：</strong>AI 优化的全网搜索，适合专业领域检索</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📚</span>tavily-research</div><div class="skill-description">Tavily 研究</div><div class="skill-usage"><strong>用途：</strong>深度行业研究、竞品分析</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">🌐</span>cn-web-search</div><div class="skill-description">中文网页搜索</div><div class="skill-usage"><strong>用途：</strong>聚合 13+ 免费搜索引擎，包含公众号文章</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📰</span>ai-news-research</div><div class="skill-description">AI 新闻研究</div><div class="skill-usage"><strong>用途：</strong>AI 行业新闻搜集整理</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📡</span>ai-intel-radar</div><div class="skill-description">AI 情报雷达</div><div class="skill-usage"><strong>用途：</strong>构建 AI 行业情报简报，日常/周常格式</div></div>
+                </div>
+            </div>
+
+            <div id="images" class="tab-content">
+                <h3 style="color: #667eea; margin-bottom: 20px; font-size: 1.3em;">🖼️ 图像生成</h3>
+                <div class="skills-grid">
+                    <div class="skill-card"><div class="skill-name"><span class="icon">🎨</span>generating-ai-images</div><div class="skill-description">AI 图像生成</div><div class="skill-usage"><strong>用途：</strong>文生图、图片编辑、去掉背景/LOGO</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">🍌</span>nano-banana-pro</div><div class="skill-description">Nano Banana Pro</div><div class="skill-usage"><strong>用途：</strong>Gemini 3 Pro Image 图像生成/编辑</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">🖼️</span>openai-image-gen</div><div class="skill-description">OpenAI 图像生成</div><div class="skill-usage"><strong>用途：</strong>批量生成图片，HTML 画廊展示</div></div>
+                </div>
+            </div>
+
+            <div id="office" class="tab-content">
+                <h3 style="color: #667eea; margin-bottom: 20px; font-size: 1.3em;">💼 办公效率</h3>
+                <div class="skills-grid">
+                    <div class="skill-card"><div class="skill-name"><span class="icon">📋</span>healthcheck</div><div class="skill-description">健康检查</div><div class="skill-usage"><strong>用途：</strong>追踪饮水、睡眠，JSON 文件存储</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">🤖</span>skill-creator</div><div class="skill-description">技能创建</div><div class="skill-usage"><strong>用途：</strong>创建、编辑、审计 AgentSkills</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">🌤️</span>weather</div><div class="skill-description">天气查询</div><div class="skill-usage"><strong>用途：</strong>wttr.in 或 Open-Meteo 获取天气预报</div></div>
+                    <div class="skill-card"><div class="skill-name"><span class="icon">🔧</span>mcporter</div><div class="skill-description">MCP 服务管理</div><div class="skill-usage"><strong>用途：</strong>管理 MCP 服务器、工具调用</div></div>
+                </div>
+            </div>
+        </div>
+
+        <a href="index.html" class="home-link"><span class="emoji">🏠</span>返回首页</a>
+        <a href="#" class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;" title="返回顶部">⬆️</a>
+
+        <footer>
+            <p>🦞 OpenClaw AI 助手 · 已掌握技能 · 2026 年 3 月</p>
+        </footer>
+    </div>
+    <script>
+        function switchTab(event, tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+        window.addEventListener('scroll', function() {
+            var backToTop = document.querySelector('.back-to-top');
+            if (window.scrollY > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,356 +1,71 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>电力行业案例 - OpenClaw AI 助手</title>
+    <title>行业案例 - OpenClaw AI 助手</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #333;
-            line-height: 1.6;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            text-align: center;
-        }
-
-        h1 {
-            color: #667eea;
-            font-size: 2.2em;
-            margin-bottom: 10px;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 600;
-            padding: 10px 20px;
-            background: rgba(102, 126, 234, 0.1);
-            border-radius: 25px;
-            transition: all 0.3s ease;
-        }
-
-        .back-link:hover {
-            background: rgba(102, 126, 234, 0.2);
-            transform: translateX(-5px);
-        }
-
-        .case-section {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        .case-section h2 {
-            color: #667eea;
-            margin-bottom: 25px;
-            font-size: 1.8em;
-            display: flex;
-            align-items: center;
-        }
-
-        .case-section h2 .icon {
-            margin-right: 15px;
-            font-size: 1.2em;
-        }
-
-        .case-card {
-            background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 25px;
-            border: 2px solid #667eea;
-            transition: all 0.3s ease;
-        }
-
-        .case-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.2);
-        }
-
-        .case-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px dashed #667eea;
-        }
-
-        .case-icon {
-            font-size: 3em;
-            margin-right: 20px;
-        }
-
-        .case-title h3 {
-            color: #333;
-            font-size: 1.4em;
-            margin-bottom: 5px;
-        }
-
-        .case-tags {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            background: #667eea;
-            color: #fff;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.85em;
-        }
-
-        .tag.secondary {
-            background: #764ba2;
-        }
-
-        .case-body {
-            margin: 20px 0;
-        }
-
-        .case-body h4 {
-            color: #667eea;
-            margin: 20px 0 10px 0;
-            font-size: 1.1em;
-        }
-
-        .case-body p {
-            color: #666;
-            line-height: 1.7;
-            margin-bottom: 15px;
-        }
-
-        .case-body ul {
-            margin-left: 20px;
-            margin-bottom: 15px;
-        }
-
-        .case-body li {
-            color: #666;
-            margin: 8px 0;
-            line-height: 1.6;
-        }
-
-        .result-box {
-            background: #e8f5e9;
-            border: 2px solid #4caf50;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-
-        .result-box h4 {
-            color: #2e7d32;
-            margin-bottom: 10px;
-        }
-
-        .result-box ul {
-            list-style: none;
-            margin-left: 0;
-        }
-
-        .result-box li {
-            padding: 5px 0;
-            color: #555;
-        }
-
-        .result-box li::before {
-            content: '✓ ';
-            color: #4caf50;
-            font-weight: bold;
-        }
-
-        .demo-box {
-            background: #2d2d2d;
-            color: #f8f8f2;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-            font-family: 'Consolas', monospace;
-            font-size: 0.9em;
-            overflow-x: auto;
-        }
-
-        .demo-box .comment {
-            color: #75715e;
-        }
-
-        .demo-box .cmd {
-            color: #66d9ef;
-        }
-
-        .demo-box .output {
-            color: #a6e22e;
-        }
-
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .stat-mini {
-            text-align: center;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea10, #764ba210);
-            border-radius: 10px;
-            border: 2px solid #667eea;
-        }
-
-        .stat-mini .num {
-            font-size: 1.8em;
-            color: #667eea;
-            font-weight: bold;
-            display: block;
-        }
-
-        .stat-mini .label {
-            color: #666;
-            font-size: 0.85em;
-        }
-
-        .workflow-diagram {
-            background: #fff;
-            border: 2px solid #667eea;
-            border-radius: 15px;
-            padding: 25px;
-            margin: 20px 0;
-        }
-
-        .workflow-step {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            padding: 15px;
-            background: #f8f9ff;
-            border-radius: 10px;
-        }
-
-        .step-num {
-            background: #667eea;
-            color: #fff;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-right: 15px;
-            flex-shrink: 0;
-            font-size: 1.1em;
-        }
-
-        .step-content h5 {
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .step-content p {
-            color: #666;
-            font-size: 0.9em;
-            margin: 0;
-        }
-
-        .arrow {
-            text-align: center;
-            font-size: 1.5em;
-            color: #667eea;
-            margin: 10px 0;
-        }
-
-        footer {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.9);
-            margin-top: 40px;
-            padding: 20px;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #333; line-height: 1.6; min-height: 100vh; padding: 20px; padding-bottom: 150px;  }
+        .container { max-width: 1400px; margin: 0 auto; padding-bottom: 80px; }
+        header { background: rgba(255, 255, 255, 0.95); border-radius: 20px; padding: 30px 40px; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2); text-align: center;  }
+        h1 { color: #667eea; font-size: 2em; margin-bottom: 8px; }
+        .header-subtitle { color: #666; font-size: 0.95em; }
+        .back-link { display: inline-block; margin-bottom: 15px; color: #667eea; text-decoration: none; font-weight: 600; padding: 8px 20px; background: rgba(102, 126, 234, 0.1); border-radius: 25px; transition: all 0.3s ease; font-size: 0.9em; }
+        .back-link:hover { background: rgba(102, 126, 234, 0.2); transform: translateX(-5px); }
+        .tabs-container { background: rgba(255, 255, 255, 0.95); border-radius: 20px; padding: 30px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2); margin-bottom: 30px; }
+        .tabs-nav { display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 2px solid #e0e0e0; padding-bottom: 0;  }
+        .tab-btn { padding: 12px 25px; background: transparent; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-size: 1em; font-weight: 600; color: #666; transition: all 0.3s ease; position: relative; top: 2px; }
+        .tab-btn:hover { color: #667eea; }
+        .tab-btn.active { color: #667eea; border-bottom-color: #667eea; }
+        .tab-content { display: none; margin-bottom: 20px; }
+        .tab-content.active { display: block; }
+        .case-card { background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%); border-radius: 15px; padding: 25px; margin-bottom: 20px; border: 2px solid #667eea; }
+        .case-card h3 { color: #333; margin-bottom: 12px; font-size: 1.15em; }
+        .case-card .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; }
+        .tag { background: #667eea; color: #fff; padding: 4px 12px; border-radius: 15px; font-size: 0.75em; }
+        .case-card p { color: #666; margin-bottom: 12px; font-size: 0.9em; }
+        .result-box { background: #e8f5e9; border: 2px solid #4caf50; border-radius: 10px; padding: 15px; margin: 15px 0; }
+        .result-box h4 { color: #2e7d32; margin-bottom: 10px; font-size: 0.95em; }
+        .result-box ul { list-style: none; margin-left: 0; }
+        .result-box li { padding: 5px 0; color: #555; font-size: 0.85em; }
+        .result-box li::before { content: '✓ '; color: #4caf50; font-weight: bold; }
+        .workflow-step { display: flex; align-items: flex-start; margin-bottom: 12px; padding: 12px; background: #f8f9ff; border-radius: 8px; }
+        .step-num { background: #667eea; color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 12px;  font-size: 0.9em; }
+        .step-content h5 { color: #333; margin-bottom: 3px; font-size: 0.9em; }
+        .step-content p { color: #666; font-size: 0.8em; margin: 0; }
+        .tab-content::-webkit-scrollbar { width: 6px; }
+        .tab-content::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 3px; }
+        .tab-content::-webkit-scrollbar-thumb { background: #667eea; border-radius: 3px; }
+        .home-link { position: fixed; bottom: 25px; right: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; padding: 12px 28px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 0.95em; box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4); transition: all 0.3s ease; z-index: 1000; display: flex; align-items: center; gap: 8px; } .back-to-top { position: fixed; bottom: 85px; right: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; width: 45px; height: 45px; border-radius: 50%; text-decoration: none; box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4); transition: all 0.3s ease; z-index: 1000; display: none; align-items: center; justify-content: center; font-size: 1.5em; } .back-to-top:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(102, 126, 234, 0.6); } .back-to-top.show { display: flex; }
+        .home-link:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(102, 126, 234, 0.6); }
+        .home-link .emoji { font-size: 1.2em; }
+        footer { text-align: center; color: rgba(255, 255, 255, 0.9); margin-top: 20px; padding: 15px;  }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="index.html" class="back-link">← 返回首页</a>
-
         <header>
-            <h1>🏭 电力行业应用案例</h1>
-            <p style="color: #666; margin-top: 10px;">AI+ 电力 · 智巡缺陷分析 · 行业解决方案</p>
+            <h1>🏭 行业案例</h1>
+            <p class="header-subtitle">AI+ 电力 · 智巡缺陷分析 · 行业解决方案</p>
         </header>
-
-        <!-- 案例 1 -->
-        <div class="case-section">
-            <h2><span class="icon">📊</span>已完成案例</h2>
-            
-            <div class="case-card">
-                <div class="case-header">
-                    <div class="case-icon">🎯</div>
-                    <div class="case-title">
-                        <h3>AI+ 电力行业商业机会分析报告</h3>
-                        <div class="case-tags">
-                            <span class="tag">智巡缺陷分析</span>
-                            <span class="tag">商业机会</span>
-                            <span class="tag">11 页报告</span>
-                            <span class="tag secondary">2026-03-17 完成</span>
-                        </div>
+        <div class="tabs-container">
+            <div class="tabs-nav">
+                <button class="tab-btn active" onclick="switchTab(event, 'completed')">已完成案例</button>
+                <button class="tab-btn" onclick="switchTab(event, 'ongoing')">进行中案例</button>
+                <button class="tab-btn" onclick="switchTab(event, 'scenarios')">其他场景</button>
+            </div>
+            <div id="completed" class="tab-content active">
+                <div class="case-card">
+                    <h3>🎯 AI+ 电力行业商业机会分析报告</h3>
+                    <div class="tags">
+                        <span class="tag">智巡缺陷分析</span>
+                        <span class="tag">商业机会</span>
+                        <span class="tag">11 页报告</span>
+                        <span class="tag">2026-03-17 完成</span>
                     </div>
-                </div>
-
-                <div class="case-body">
-                    <h4>📋 项目背景</h4>
-                    <p>为上海艾飞能源科技有限公司（162 人规模）技术总监生成 AI+ 电力行业商业机会分析报告，重点分析智巡缺陷检测方向的商业价值和技术路线。</p>
-
-                    <h4>🎯 核心内容</h4>
-                    <ul>
-                        <li><strong>市场规模分析：</strong>中国电力智能巡检市场规模、增长率、主要玩家</li>
-                        <li><strong>技术路线对比：</strong>计算机视觉方案 vs 传统方案，准确率/成本/部署难度三维对比</li>
-                        <li><strong>商业机会识别：</strong>输电线缺陷检测、变电站设备巡检、配电网故障识别三大场景</li>
-                        <li><strong>竞争格局：</strong>国网系、南网系、第三方厂商市场份额和技术优势</li>
-                        <li><strong>进入策略：</strong>技术合作、样本积累、资质获取、标杆项目打造</li>
-                    </ul>
-
-                    <div class="stats-row">
-                        <div class="stat-mini">
-                            <span class="num">11 页</span>
-                            <span class="label">完整报告</span>
-                        </div>
-                        <div class="stat-mini">
-                            <span class="num">5+</span>
-                            <span class="label">技术对比维度</span>
-                        </div>
-                        <div class="stat-mini">
-                            <span class="num">3</span>
-                            <span class="label">核心应用场景</span>
-                        </div>
-                        <div class="stat-mini">
-                            <span class="num">PPT</span>
-                            <span class="label">汇报材料</span>
-                        </div>
-                    </div>
-
+                    <p><strong>项目背景：</strong>为电力行业技术总监（162 人规模团队）生成 AI+ 电力行业商业机会分析报告，重点分析智巡缺陷检测方向的商业价值和技术路线。</p>
+                    <p><strong>核心内容：</strong>市场规模分析、技术路线对比、商业机会识别、竞争格局、进入策略</p>
                     <div class="result-box">
                         <h4>✅ 交付成果</h4>
                         <ul>
@@ -360,217 +75,77 @@
                             <li>3-5 个标杆企业案例分析</li>
                         </ul>
                     </div>
-
-                    <div class="demo-box">
-<span class="comment"># 使用指令</span>
-<span class="cmd">"生成一份 AI+ 电力行业商业机会分析报告，重点分析智巡缺陷检测方向，要求：</span>
-<span class="cmd">1. 每个章节配 1-2 张 AI 生成图片</span>
-<span class="cmd">2. 包含 2-3 个详细业务场景（背景 + 过程 + 效果）</span>
-<span class="cmd">3. 包含真实案例（数据 + 企业名称 + 实施效果）</span>
-<span class="cmd">4. 输出为 Word 格式 + PPT 汇报材料"</span>
+                </div>
+            </div>
+            <div id="ongoing" class="tab-content">
+                <div class="case-card">
+                    <h3>🔍 智巡缺陷样本分析 Demo 开发</h3>
+                    <div class="tags">
+                        <span class="tag">缺陷检测</span>
+                        <span class="tag">样本分析</span>
+                        <span class="tag">Demo 开发</span>
+                        <span class="tag">2 周周期</span>
                     </div>
+                    <p><strong>项目目标：</strong>开发智巡缺陷样本分析 Demo，验证 AI 技术在电力巡检场景的实际应用效果，为后续商业化落地提供技术验证。</p>
+                    <h4 style="color: #667eea; margin: 15px 0 10px 0; font-size: 1em;">🎯 技术路线</h4>
+                    <div class="workflow-step">
+                        <div class="step-num">1</div>
+                        <div class="step-content"><h5>样本收集与标注</h5><p>收集输电线、变电站、配电网缺陷样本 1000+ 张，进行专业标注</p></div>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-num">2</div>
+                        <div class="step-content"><h5>模型选型与训练</h5><p>对比 YOLO、Faster R-CNN、Detectron2 等模型，选择最优方案</p></div>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-num">3</div>
+                        <div class="step-content"><h5>准确率验证</h5><p>在测试集上验证模型准确率，目标 mAP≥85%</p></div>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-num">4</div>
+                        <div class="step-content"><h5>部署 Demo 搭建</h5><p>搭建可演示的 Web 界面，支持图片上传和实时检测</p></div>
+                    </div>
+                </div>
+            </div>
+            <div id="scenarios" class="tab-content">
+                <div class="case-card" style="border-color: #4caf50; background: linear-gradient(135deg, #e8f5e9 0%, #fff 100%);">
+                    <h3 style="color: #2e7d32;">🖥️ 示例演示：设备健康管理平台</h3>
+                    <div class="tags"><span class="tag" style="background: #4caf50;">实时演示</span><span class="tag">电力设备</span><span class="tag">健康管理</span><span class="tag">预测性维护</span></div>
+                    <p><strong>平台简介：</strong>基于 OpenClaw 构建的电力设备健康管理平台，实现设备状态实时监控、故障预测、健康评估、维护建议等功能。</p>
+                    <p><strong>核心功能：</strong>设备档案管理、实时数据采集、健康度评估、故障预警、维护计划、数据分析报表</p>
+                    <div style="margin-top: 20px; text-align: center;">
+                        <a href="https://wanxin533.github.io/power-equipment-health-v3/index.html" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #4caf50 0%, #8bc34a 100%); color: #fff; padding: 15px 40px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 1em; box-shadow: 0 5px 20px rgba(76, 175, 80, 0.4); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 10px 30px rgba(76, 175, 80, 0.6)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 20px rgba(76, 175, 80, 0.4)'">🚀 进入演示系统 →</a>
+                    </div>
+                </div>
+                <div class="case-card">
+                    <h3>📈 研发效率分析与优化</h3>
+                    <div class="tags"><span class="tag">数据分析</span><span class="tag">效率提升</span><span class="tag">30%+ 目标</span></div>
+                    <p><strong>应用场景：</strong>分析研发团队效率数据，识别瓶颈环节，提出优化建议，目标提升研发效率 30%+。</p>
+                    <p><strong>分析维度：</strong>项目工时分布分析、人员效率对比分析、成本效益分析、瓶颈环节识别</p>
+                </div>
+                <div class="case-card">
+                    <h3>📄 周报自动生成</h3>
+                    <div class="tags"><span class="tag">办公自动化</span><span class="tag">每周六 18:00</span><span class="tag">钉钉推送</span></div>
+                    <p><strong>应用场景：</strong>每周六 18:00 自动生成技术总监周报，包含本周工作回顾、分部支撑、下周工作计划、需要协调的工作、需要重点关注的工作。</p>
+                </div>
+                <div class="case-card">
+                    <h3>🎨 架构图与原型设计</h3>
+                    <div class="tags"><span class="tag">手绘风格</span><span class="tag">Mermaid</span><span class="tag">系统框架</span></div>
+                    <p><strong>应用场景：</strong>生成手绘风格的系统架构图、业务流程图、产品原型图，用于技术方案评审、客户演示、内部培训。</p>
                 </div>
             </div>
         </div>
-
-        <!-- 案例 2 -->
-        <div class="case-section">
-            <h2><span class="icon">🔄</span>进行中案例</h2>
-            
-            <div class="case-card">
-                <div class="case-header">
-                    <div class="case-icon">🔍</div>
-                    <div class="case-title">
-                        <h3>智巡缺陷样本分析 Demo 开发</h3>
-                        <div class="case-tags">
-                            <span class="tag">缺陷检测</span>
-                            <span class="tag">样本分析</span>
-                            <span class="tag">Demo 开发</span>
-                            <span class="tag secondary">2 周周期</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="case-body">
-                    <h4>📋 项目目标</h4>
-                    <p>开发智巡缺陷样本分析 Demo，验证 AI 技术在电力巡检场景的实际应用效果，为后续商业化落地提供技术验证。</p>
-
-                    <h4>🎯 技术路线</h4>
-                    <div class="workflow-diagram">
-                        <div class="workflow-step">
-                            <div class="step-num">1</div>
-                            <div class="step-content">
-                                <h5>样本收集与标注</h5>
-                                <p>收集输电线、变电站、配电网缺陷样本 1000+ 张，进行专业标注</p>
-                            </div>
-                        </div>
-
-                        <div class="arrow">↓</div>
-
-                        <div class="workflow-step">
-                            <div class="step-num">2</div>
-                            <div class="step-content">
-                                <h5>模型选型与训练</h5>
-                                <p>对比 YOLO、Faster R-CNN、Detectron2 等模型，选择最优方案</p>
-                            </div>
-                        </div>
-
-                        <div class="arrow">↓</div>
-
-                        <div class="workflow-step">
-                            <div class="step-num">3</div>
-                            <div class="step-content">
-                                <h5>准确率验证</h5>
-                                <p>在测试集上验证模型准确率，目标 mAP≥85%</p>
-                            </div>
-                        </div>
-
-                        <div class="arrow">↓</div>
-
-                        <div class="workflow-step">
-                            <div class="step-num">4</div>
-                            <div class="step-content">
-                                <h5>部署 Demo 搭建</h5>
-                                <p>搭建可演示的 Web 界面，支持图片上传和实时检测</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="stats-row">
-                        <div class="stat-mini">
-                            <span class="num">2 周</span>
-                            <span class="label">开发周期</span>
-                        </div>
-                        <div class="stat-mini">
-                            <span class="num">1000+</span>
-                            <span class="label">样本数量</span>
-                        </div>
-                        <div class="stat-mini">
-                            <span class="num">85%+</span>
-                            <span class="label">目标准确率</span>
-                        </div>
-                        <div class="stat-mini">
-                            <span class="num">Web</span>
-                            <span class="label">演示界面</span>
-                        </div>
-                    </div>
-
-                    <div class="result-box">
-                        <h4>✅ 预期成果</h4>
-                        <ul>
-                            <li>可运行的缺陷检测 Demo 系统</li>
-                            <li>技术验证报告（准确率/性能/成本）</li>
-                            <li>商业化落地建议书</li>
-                            <li>客户演示材料（PPT+ 视频）</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 其他应用场景 -->
-        <div class="case-section">
-            <h2><span class="icon">💡</span>其他应用场景</h2>
-            
-            <div class="case-card">
-                <div class="case-header">
-                    <div class="case-icon">📈</div>
-                    <div class="case-title">
-                        <h3>研发效率分析与优化</h3>
-                        <div class="case-tags">
-                            <span class="tag">数据分析</span>
-                            <span class="tag">效率提升</span>
-                            <span class="tag">30%+ 目标</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="case-body">
-                    <h4>📋 应用场景</h4>
-                    <p>分析研发团队效率数据，识别瓶颈环节，提出优化建议，目标提升研发效率 30%+。</p>
-
-                    <h4>🎯 分析维度</h4>
-                    <ul>
-                        <li>项目工时分布分析（饼图 + 趋势图）</li>
-                        <li>人员效率对比分析（柱状图 + 热力图）</li>
-                        <li>成本效益分析（投入产出比）</li>
-                        <li>瓶颈环节识别（流程分析图）</li>
-                    </ul>
-
-                    <div class="demo-box">
-<span class="comment"># 使用指令</span>
-<span class="cmd">"分析研发效率数据，生成可视化报表：</span>
-<span class="cmd">1. 各项目工时分布（饼图）</span>
-<span class="cmd">2. 月度效率趋势（折线图）</span>
-<span class="cmd">3. 成本效益分析（柱状图）</span>
-<span class="cmd">4. 输出 Excel 文件 + Mermaid 架构图"</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="case-card">
-                <div class="case-header">
-                    <div class="case-icon">📄</div>
-                    <div class="case-title">
-                        <h3>周报自动生成</h3>
-                        <div class="case-tags">
-                            <span class="tag">办公自动化</span>
-                            <span class="tag">每周六 18:00</span>
-                            <span class="tag">钉钉推送</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="case-body">
-                    <h4>📋 应用场景</h4>
-                    <p>每周六 18:00 自动生成技术总监周报，包含本周工作回顾、分部支撑、下周工作计划、需要协调的工作、需要重点关注的工作。</p>
-
-                    <div class="result-box">
-                        <h4>✅ 周报格式</h4>
-                        <ul>
-                            <li><strong>起/止日期：</strong>2026-03-10 至 2026-03-16</li>
-                            <li><strong>本周工作回顾：</strong>完成 AI+ 电力行业报告、智巡缺陷分析 Demo 启动...</li>
-                            <li><strong>分部支撑：</strong>支持研发部技术方案评审、协助市场部客户演示...</li>
-                            <li><strong>下周工作计划：</strong>完成 Demo 原型、启动效率分析工具引入...</li>
-                            <li><strong>需要协调的工作：</strong>需要样本数据支持、需要客户现场调研...</li>
-                            <li><strong>需要重点关注的工作：</strong>智巡缺陷分析技术路线确认...</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="case-card">
-                <div class="case-header">
-                    <div class="case-icon">🎨</div>
-                    <div class="case-title">
-                        <h3>架构图与原型设计</h3>
-                        <div class="case-tags">
-                            <span class="tag">手绘风格</span>
-                            <span class="tag">Mermaid</span>
-                            <span class="tag">系统框架</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="case-body">
-                    <h4>📋 应用场景</h4>
-                    <p>生成手绘风格的系统架构图、业务流程图、产品原型图，用于技术方案评审、客户演示、内部培训。</p>
-
-                    <div class="demo-box">
-<span class="comment"># 使用指令</span>
-<span class="cmd">"绘制智巡缺陷分析系统架构图，手绘风格 Mermaid，包含：</span>
-<span class="cmd">- 数据采集层（无人机/摄像头/传感器）</span>
-<span class="cmd">- 数据处理层（图像预处理/样本标注）</span>
-<span class="cmd">- AI 分析层（缺陷检测模型/结果输出）</span>
-<span class="cmd">- 应用层（Web 界面/移动端/API）"</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <footer>
-            <p>🦞 OpenClaw AI 助手 · 电力行业案例 · 2026 年 3 月</p>
-        </footer>
     </div>
+    <script>
+        function switchTab(event, tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        } window.addEventListener('scroll', function() { var backToTop = document.querySelector('.back-to-top'); if (window.scrollY > 300) { backToTop.classList.add('show'); } else { backToTop.classList.remove('show'); } });</script>
 </body>
 </html>
+
+
+
+
+

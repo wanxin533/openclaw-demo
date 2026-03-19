@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>业务赋能 - OpenClaw AI 助手</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #333; line-height: 1.6; min-height: 100vh; padding: 20px; padding-bottom: 150px;  }
+        .container { max-width: 1400px; margin: 0 auto; padding-bottom: 80px; }
+        header { background: rgba(255, 255, 255, 0.95); border-radius: 20px; padding: 30px 40px; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2); text-align: center;  }
+        h1 { color: #667eea; font-size: 2em; margin-bottom: 8px; }
+        .header-subtitle { color: #666; font-size: 0.95em; }
+        .back-link { display: inline-block; margin-bottom: 15px; color: #667eea; text-decoration: none; font-weight: 600; padding: 8px 20px; background: rgba(102, 126, 234, 0.1); border-radius: 25px; transition: all 0.3s ease; font-size: 0.9em; }
+        .back-link:hover { background: rgba(102, 126, 234, 0.2); transform: translateX(-5px); }
+        .tabs-container { background: rgba(255, 255, 255, 0.95); border-radius: 20px; padding: 30px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2); margin-bottom: 30px; }
+        .tabs-nav { display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 2px solid #e0e0e0; padding-bottom: 0;  }
+        .tab-btn { padding: 12px 25px; background: transparent; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-size: 1em; font-weight: 600; color: #666; transition: all 0.3s ease; position: relative; top: 2px; }
+        .tab-btn:hover { color: #667eea; }
+        .tab-btn.active { color: #667eea; border-bottom-color: #667eea; }
+        .tab-content { display: none; margin-bottom: 20px; }
+        .tab-content.active { display: block; }
+        .scenarios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin: 20px 0; }
+        .scenario-card { background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%); border-radius: 15px; padding: 25px; border: 2px solid #667eea; position: relative; overflow: hidden; }
+        .scenario-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); }
+        .scenario-card.office::before { background: linear-gradient(90deg, #4caf50 0%, #8bc34a 100%); }
+        .scenario-card.business::before { background: linear-gradient(90deg, #2196f3 0%, #03a9f4 100%); }
+        .scenario-icon { font-size: 2.5em; margin-bottom: 12px; display: block; }
+        .scenario-card h3 { color: #333; margin-bottom: 12px; font-size: 1.15em; }
+        .scenario-card .description { color: #666; margin-bottom: 15px; font-size: 0.85em; line-height: 1.6; }
+        .scenario-card .value-prop { background: rgba(102, 126, 234, 0.08); padding: 12px; border-radius: 8px; margin-bottom: 15px; }
+        .scenario-card .value-prop h4 { color: #667eea; margin-bottom: 6px; font-size: 0.85em; }
+        .scenario-card .value-prop p { color: #555; font-size: 0.8em; }
+        .scenario-card .cases ul { list-style: none; padding-left: 0; }
+        .scenario-card .cases li { padding: 6px 0; color: #666; font-size: 0.8em; border-bottom: 1px dashed #e0e0e0; }
+        .scenario-card .cases li:last-child { border-bottom: none; }
+        .scenario-card .cases li::before { content: '✓ '; color: #667eea; font-weight: bold; }
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 20px 0; background: #fff; border-radius: 15px; overflow: hidden; }
+        .comparison-table thead { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
+        .comparison-table th { padding: 15px; text-align: left; font-size: 1em; }
+        .comparison-table td { padding: 12px 15px; border-bottom: 1px solid #e0e0e0; font-size: 0.9em; }
+        .comparison-table tr:hover { background: #f8f9ff; }
+        .highlight { font-weight: bold; color: #667eea; }
+        .tab-content::-webkit-scrollbar { width: 6px; }
+        .tab-content::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 3px; }
+        .tab-content::-webkit-scrollbar-thumb { background: #667eea; border-radius: 3px; }
+        .home-link { position: fixed; bottom: 25px; right: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; padding: 12px 28px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 0.95em; box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4); transition: all 0.3s ease; z-index: 1000; display: flex; align-items: center; gap: 8px; } .back-to-top { position: fixed; bottom: 85px; right: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; width: 45px; height: 45px; border-radius: 50%; text-decoration: none; box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4); transition: all 0.3s ease; z-index: 1000; display: none; align-items: center; justify-content: center; font-size: 1.5em; } .back-to-top:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(102, 126, 234, 0.6); } .back-to-top.show { display: flex; }
+        .home-link:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(102, 126, 234, 0.6); }
+        .home-link .emoji { font-size: 1.2em; }
+        footer { text-align: center; color: rgba(255, 255, 255, 0.9); margin-top: 20px; padding: 15px;  }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💼 业务赋能场景</h1>
+            <p class="header-subtitle">办公赋能 + 业务赋能 · 8 大场景 · 全面提效</p>
+        </header>
+        <div class="tabs-container">
+            <div class="tabs-nav">
+                <button class="tab-btn active" onclick="switchTab(event, 'office')">办公赋能</button>
+                <button class="tab-btn" onclick="switchTab(event, 'business')">业务赋能</button>
+                <button class="tab-btn" onclick="switchTab(event, 'comparison')">价值对比</button>
+            </div>
+            <div id="office" class="tab-content active">
+                <h3 style="color: #4caf50; margin-bottom: 15px; font-size: 1.2em;">🏢 办公赋能场景 <span style="font-size: 0.8em; color: #666;">通用能力 · 所有企业都需要</span></h3>
+                <p style="color: #666; margin-bottom: 20px; font-size: 0.9em;"><strong>目标：</strong>提升办公效率、释放人力、知识沉淀 | <strong>目标客户：</strong>全员适用 | <strong>核心价值：</strong>人均效能提升 30%+</p>
+                <div class="scenarios-grid">
+                    <div class="scenario-card office"><span class="scenario-icon">📊</span><h3>数据挖掘与分析</h3><p class="description">自然语言查询业务数据，自动分析数据趋势、生成可视化报表，让业务人员无需 IT 支持即可自助分析。</p><div class="value-prop"><h4>💡 核心价值</h4><p>数据驱动决策，报表编制时间节省 80%</p></div><div class="cases"><h4 style="color: #667eea; margin-bottom: 8px; font-size: 0.85em;">🎯 典型场景</h4><ul><li>智能问数：自然语言查询业务数据</li><li>报表自动生成：日报/周报/月报自动汇总</li><li>数据可视化：自动分析趋势、生成图表</li><li>异常检测：自动发现数据异常并告警</li></ul></div></div>
+                    <div class="scenario-card office"><span class="scenario-icon">📝</span><h3>业务创新与写作</h3><p class="description">公文写作、方案制作、PPT 生成、公众号文章自动撰写，让写作更高效，释放创意时间。</p><div class="value-prop"><h4>💡 核心价值</h4><p>写作时间节省 60%，PPT 制作从几小时缩短到 10 分钟</p></div><div class="cases"><h4 style="color: #667eea; margin-bottom: 8px; font-size: 0.85em;">🎯 典型场景</h4><ul><li>公文写作：通知/报告/总结/请示自动撰写</li><li>方案制作：技术方案/投标方案辅助编写</li><li>PPT 生成：根据大纲自动生成 PPT</li><li>公众号文章：热点追踪、自动撰写</li></ul></div></div>
+                    <div class="scenario-card office"><span class="scenario-icon">🤖</span><h3>办公自动化</h3><p class="description">会议管理、流程审批、邮件处理、日程管理自动化，减少重复劳动，专注高价值工作。</p><div class="value-prop"><h4>💡 核心价值</h4><p>审批效率提升 70%，邮件处理时间减少 60%</p></div><div class="cases"><h4 style="color: #667eea; margin-bottom: 8px; font-size: 0.85em;">🎯 典型场景</h4><ul><li>会议管理：会议纪要自动生成、待办跟踪</li><li>流程审批：智能审核单据、自动流转</li><li>邮件处理：自动分类、智能回复</li><li>日程管理：智能安排会议、冲突检测</li></ul></div></div>
+                    <div class="scenario-card office"><span class="scenario-icon">📚</span><h3>知识管理与培训</h3><p class="description">知识蒸馏、智能问答、新人培训、经验传承，让企业知识不流失，新人快速上手。</p><div class="value-prop"><h4>💡 核心价值</h4><p>新人培养周期缩短 50%，80% 问题自助解决</p></div><div class="cases"><h4 style="color: #667eea; margin-bottom: 8px; font-size: 0.85em;">🎯 典型场景</h4><ul><li>知识蒸馏：从对话/任务中自动提取知识</li><li>智能问答：7×24 小时业务咨询</li><li>新人培训：个性化学习路径、案例推荐</li><li>经验传承：优秀案例沉淀、最佳实践</li></ul></div></div>
+                </div>
+            </div>
+            <div id="business" class="tab-content">
+                <h3 style="color: #2196f3; margin-bottom: 15px; font-size: 1.2em;">⚡ 业务赋能场景 <span style="font-size: 0.8em; color: #666;">专业能力 · 电力行业专属</span></h3>
+                <p style="color: #666; margin-bottom: 20px; font-size: 0.9em;"><strong>目标：</strong>提升生产效率、保障安全、业务创新 | <strong>目标客户：</strong>运检部、调度中心、营销部等业务部门 | <strong>核心价值：</strong>业务效率提升 60%+</p>
+                <div class="scenarios-grid">
+                    <div class="scenario-card business"><span class="scenario-icon">⚡</span><h3>输变电 AI 场景</h3><p class="description">智能巡检、缺陷分析、应急演练、多系统协同，让 AI 从"辅助工具"进化为"生产力主体"。</p><div class="value-prop"><h4>💡 核心价值</h4><p>巡检效率提升 6 倍，缺陷处理效率提升 40 倍</p></div><div class="cases"><h4 style="color: #667eea; margin-bottom: 8px; font-size: 0.85em;">🎯 典型场景</h4><ul><li>智能巡检：无人机/机器人自主巡检</li><li>缺陷分析：自动定级、报告生成、派单跟踪</li><li>应急演练：应急预案自动执行</li><li>多系统协同：PMS/GIS/SCADA 自动对接</li></ul></div></div>
+                    <div class="scenario-card business"><span class="scenario-icon">🔌</span><h3>配电 AI 场景</h3><p class="description">故障定位、负荷预测、停电管理、配网优化，提升供电可靠性，优化投资决策。</p><div class="value-prop"><h4>💡 核心价值</h4><p>故障查找时间减少 70%，预测准确率 95%+</p></div><div class="cases"><h4 style="color: #667eea; margin-bottom: 8px; font-size: 0.85em;">🎯 典型场景</h4><ul><li>故障定位：自动分析故障原因和位置</li><li>负荷预测：短期/中期负荷精准预测</li><li>停电管理：停电计划优化、通知自动发送</li><li>配网优化：网架结构优化建议</li></ul></div></div>
+                    <div class="scenario-card business"><span class="scenario-icon">💼</span><h3>营销 AI 场景</h3><p class="description">客户服务、电费分析、市场拓展、能效分析，提升客户满意度，拓展增值业务。</p><div class="value-prop"><h4>💡 核心价值</h4><p>客服效率提升 3 倍，业务转化率提升 25%</p></div><div class="cases"><h4 style="color: #667eea; margin-bottom: 8px; font-size: 0.85em;">🎯 典型场景</h4><ul><li>客户服务：智能客服、工单自动处理</li><li>电费分析：电费回收预测、异常用电检测</li><li>市场拓展：潜在客户需求挖掘</li><li>能效分析：用户用能分析、节能建议</li></ul></div></div>
+                    <div class="scenario-card business"><span class="scenario-icon">📈</span><h3>管理 AI 场景</h3><p class="description">人力资源、财务管理、物资管理、安全管理，提升管理效率，降低运营风险。</p><div class="value-prop"><h4>💡 核心价值</h4><p>人力成本降低 20%，财务效率提升 50%</p></div><div class="cases"><h4 style="color: #667eea; margin-bottom: 8px; font-size: 0.85em;">🎯 典型场景</h4><ul><li>人力资源：人员调度、资质匹配、绩效考核</li><li>财务管理：预算编制、费用审核、风险预警</li><li>物资管理：库存优化、采购建议</li><li>安全管理：风险识别、隐患排查</li></ul></div></div>
+                </div>
+            </div>
+            <div id="comparison" class="tab-content">
+                <h3 style="color: #667eea; margin-bottom: 20px; font-size: 1.3em;">📊 客户价值对比</h3>
+                <table class="comparison-table">
+                    <thead><tr><th>维度</th><th>办公赋能</th><th>业务赋能</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>目标客户</strong></td><td>全员适用</td><td>业务部门</td></tr>
+                        <tr><td><strong>部署周期</strong></td><td class="highlight">1-2 周</td><td class="highlight">1-2 月</td></tr>
+                        <tr><td><strong>见效速度</strong></td><td>快速见效</td><td>深度价值</td></tr>
+                        <tr><td><strong>定制化</strong></td><td>低（通用）</td><td>高（专业）</td></tr>
+                        <tr><td><strong>核心价值</strong></td><td>释放人力、提升效率</td><td>保障安全、业务创新</td></tr>
+                        <tr><td><strong>典型场景</strong></td><td>公文写作、报表生成</td><td>智能巡检、缺陷分析</td></tr>
+                        <tr><td><strong>效率提升</strong></td><td class="highlight">30-50%</td><td class="highlight">60-90%</td></tr>
+                        <tr><td><strong>ROI</strong></td><td class="highlight">3-6 个月</td><td class="highlight">6-12 个月</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        function switchTab(event, tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        } window.addEventListener('scroll', function() { var backToTop = document.querySelector('.back-to-top'); if (window.scrollY > 300) { backToTop.classList.add('show'); } else { backToTop.classList.remove('show'); } });</script>
+</body>
+</html>
+
+
+
+
+
